@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link, Redirect } from "react-router-dom";
-import Layout from "../core/Layout";
+import Navbar from "./Navbar";
 import axios from "axios";
-import { ToastContainer, Toast, toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import jwt from "jsonwebtoken";
 
@@ -29,7 +28,7 @@ const Activate = ({ match }) => {
 
     axios({
       method: "POST",
-      url: `${process.env.REACT_APP_API}/account/activation`,
+      url: `${process.env.REACT_APP_API}/account-activation`,
       data: { token },
     })
       .then((response) => {
@@ -47,20 +46,11 @@ const Activate = ({ match }) => {
       });
   };
 
-  //   const activationLink = () => (
-  //     <div className="text-center">
-  //       <h1 className="p-5">Hey {name} Ready to Activate your account</h1>
-  //       <button className="btn btn-outline-primary" onClick={clickSubmit}>
-  //         Activate Account
-  //       </button>
-  //     </div>
-  //   );
   return (
-    <Layout>
+    <>
+      <Navbar />
       <div className="col-md-6 offset-md-3">
         <ToastContainer />
-
-        {/* {activationLink()} */}
         <div className="text-center">
           <h1 className="p-5">Hey {name} Ready to Activate your account</h1>
           <button className="btn btn-outline-primary" onClick={clickSubmit}>
@@ -68,7 +58,7 @@ const Activate = ({ match }) => {
           </button>
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 export default Activate;

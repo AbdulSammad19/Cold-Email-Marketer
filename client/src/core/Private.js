@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link, Redirect, useHistory } from "react-router-dom";
-import Layout from "../core/Layout";
 import axios from "axios";
-import { ToastContainer, Toast, toast } from "react-toastify";
+import Navbar from "../auth/Navbar";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import { isAuth, getCookie, signout, updateUser } from "../auth/helpers";
 
-const Private = () => {
-  const history = useHistory();
+const Private = ({ history }) => {
   const [values, setValues] = useState({
     role: "",
     name: "",
@@ -23,6 +21,7 @@ const Private = () => {
   }, []);
 
   const loadProfile = () => {
+    // console.log(`Load Profile Function ${isAuth()}`);
     axios({
       method: "GET",
       url: `${process.env.REACT_APP_API}/user/${isAuth()._id}`,
@@ -83,54 +82,10 @@ const Private = () => {
         toast.error(err.response.data.e);
       });
   };
-
-  // const signupForm = () => {
-  //   <form action="" className="bg-black">
-  //     <div className="form-group ">
-  //       <label htmlFor="" className="text-muted">
-  //         Name
-  //       </label>
-  //       <input
-  //         type="text"
-  //         className="form-control"
-  //         onChange={handleChange("name")}
-  //         value={name}
-  //       />
-  //     </div>
-
-  //     <div className="form-group">
-  //       <label htmlFor="" className="text-muted">
-  //         Email
-  //       </label>
-  //       <input
-  //         type="email"
-  //         className="form-control"
-  //         onChange={handleChange("email")}
-  //         value={email}
-  //       />
-  //     </div>
-
-  //     <div className="form-group">
-  //       <label htmlFor="" className="text-muted">
-  //         Password
-  //       </label>
-  //       <input
-  //         type="password"
-  //         className="form-control"
-  //         onChange={handleChange("password")}
-  //         value={password}
-  //       />
-  //     </div>
-
-  //     <div>
-  //       <button className="btn btn-primary" onClick={clickSubmit}>
-  //         {buttonText}
-  //       </button>
-  //     </div>
-  //   </form>;
-  // };
   return (
-    <Layout>
+    <>
+      {" "}
+      <Navbar />
       <div className="col-md-6 offset-md-3">
         <ToastContainer />
 
@@ -192,7 +147,7 @@ const Private = () => {
           </div>
         </form>
       </div>
-    </Layout>
+    </>
   );
 };
 export default Private;

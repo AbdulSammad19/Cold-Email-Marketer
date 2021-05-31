@@ -10,7 +10,4 @@ router.get("/user/:id", requireSignin, read);
 router.put("/user/update", requireSignin, update);
 router.put("/admin/update", requireSignin, adminMiddleware, update);
 
-//   console.log("Error nay tung kiya hai");
-// });
-
 module.exports = router;

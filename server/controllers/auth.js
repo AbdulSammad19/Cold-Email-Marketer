@@ -8,9 +8,6 @@ const { OAuth2Client } = require("google-auth-library");
 const api_key = "1230a859244d764ee7c8bb01e4f60ea6-fa6e84b7-7c0c9a9c";
 const DOMAIN = "sandbox907a5fdc5a724ead837cb8eb6b86ee63.mailgun.org";
 
-// const sgMail = require("@sendgrid/mail");
-// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
 // send emails using mail gun
 exports.signup = (req, res) => {
   const { name, email, password } = req.body;
@@ -42,19 +39,6 @@ exports.signup = (req, res) => {
         <p>${process.env.CLIENT_URL}</p>
         `,
     };
-    // mg.message()
-    //   .send(data)
-    //   .then((sent) => {
-    //     return res.json({
-    //       message: `Email has sent to ${email} Follow the instruction to activate account`,
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     return res.json({
-    //       message: err.message,
-    //     });
-    //   });
-
     mg.messages().send(data, function (error, body) {
       if (error) {
         return res.json({
@@ -67,80 +51,6 @@ exports.signup = (req, res) => {
     });
   });
 };
-// mg.messages().send(data, function (error, body) {
-//   if (error) {
-//     console.log(error);
-//   }
-//   console.log(body);
-// });
-
-//   const emailData = {
-//     form: process.env.EMAIL_FROM,
-//     to: email,
-//     subject: "Account Activation Link",
-//     html: `
-//     <h1>Please use the following link to Activate your account</h1>
-//     <p>${process.env.CLIENT_URL}/auth/activate/${token}</p>
-//     <hr>
-//     <p> This email may contain sensitive information</p>
-//     <p>${process.env.CLIENT_URL}</p>
-//     `,
-//   };
-//   sgMail
-//     .send(emailData)
-//     .then((sent) => {
-//       return res.json({
-//         message: `Email has sent to ${email} Follow the instruction to activate account`,
-//       });
-//     })
-//     .catch((err) => {
-//       return res.json({
-//         message: err.message,
-//       });
-//     });
-
-// send emails using send grid
-// exports.signup = (req, res) => {
-//   const { name, email, password } = req.body;
-//   User.findOne({ email }).exec((err, user) => {
-//     if (user) {
-//       return res.status(400).json({
-//         error: "Email is already taken",
-//       });
-//     }
-//     const token = jwt.sign(
-//       { name, email, password },
-//       process.env.JWT_ACCOUNT_ACTIVATION,
-//       {
-//         expiresIn: "10m",
-//       }
-//     );
-//     const emailData = {
-//       form: process.env.EMAIL_FROM,
-//       to: email,
-//       subject: "Account Activation Link",
-//       html: `
-//       <h1>Please use the following link to Activate your account</h1>
-//       <p>${process.env.CLIENT_URL}/auth/activate/${token}</p>
-//       <hr>
-//       <p> This email may contain sensitive information</p>
-//       <p>${process.env.CLIENT_URL}</p>
-//       `,
-//     };
-//     sgMail
-//       .send(emailData)
-//       .then((sent) => {
-//         return res.json({
-//           message: `Email has sent to ${email} Follow the instruction to activate account`,
-//         });
-//       })
-//       .catch((err) => {
-//         return res.json({
-//           message: err.message,
-//         });
-//       });
-//   });
-// };
 
 exports.accountActivation = (req, res) => {
   const { token } = req.body;
@@ -217,7 +127,7 @@ exports.signin = (req, res) => {
 
 exports.requireSignin = expressJwt({
   secret: process.env.JWT_SECRET,
-  algorithms: ["HS256"],
+  // algorithms: ["HS256"],
 });
 
 exports.adminMiddleware = (req, res, next) => {
@@ -242,7 +152,7 @@ exports.forgotPassword = (req, res) => {
   const { email } = req.body;
   User.findOne({ email }, (err, user) => {
     if (err || !user) {
-      return res.statuus(400).json({
+      return res.status(400).json({
         error: "`User with that email does not exist",
       });
     }
@@ -290,6 +200,8 @@ exports.forgotPassword = (req, res) => {
 
 exports.resetPassword = (req, res) => {
   const { resetPasswordLink, newPassword } = req.body;
+  console.log(resetPasswordLink);
+  console.log(newPassword);
 
   if (resetPasswordLink) {
     jwt.verify(
@@ -312,7 +224,7 @@ exports.resetPassword = (req, res) => {
             password: newPassword,
             resetPasswordLink: "",
           };
-          user = _.extend(user, updateFields);
+          user = _.extend(user, updatedFields);
           user.save((err, result) => {
             if (err) {
               return res.status(400).json({

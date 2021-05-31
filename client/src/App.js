@@ -1,37 +1,24 @@
 import React from "react";
-import Layout from "./core/Layout";
-
+import Navbar from "./auth/Navbar";
 const App = () => {
   return (
-    <Layout>
+    <>
+      <Navbar />
       <div className="col-md-6 offset-md-3 text-center">
         <h1 className="p-5">React Node MongoDB Authentication Boilerplate</h1>
         <h2>MERN STACK</h2>
         <hr />
         <p className="lead">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde, tempore
-          laborum. Accusamus non neque voluptates provident dicta a delectus
-          deleniti. Reprehenderit quia quibusdam sequi distinctio quam
-          consequatur nam ab. Porro?
+          This module includes user registration by manually, facebook and
+          google. for manuall registration activation link is send to user's
+          email to activate user account. this module also include forgot
+          password, reset password link as well as private and protected routes
+          for authentication user and users with te role of admin. User can also
+          update his name and password for the moment.
         </p>
       </div>
-    </Layout>
+    </>
   );
 };
 
 export default App;
-
-// import React from "react";
-// import Layout from "./core/Layout";
-
-// const App = () => {
-//   return (
-//     <Layout>
-//       <h1>Hi React</h1>
-//       <input type="text" />
-//       <label htmlFor="n">Name</label>
-//     </Layout>
-//   );
-// };
-
-// export default App;

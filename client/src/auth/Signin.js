@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import { Link, Redirect, useHistory } from "react-router-dom";
-import Layout from "../core/Layout";
+import { Link, Redirect } from "react-router-dom";
+import Navbar from "./Navbar";
 import axios from "axios";
-import { ToastContainer, Toast, toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import { authenticate, isAuth } from "./helpers";
 import Google from "./Google";
 import Facebook from "./Facebook";
 
-const Signin = () => {
-  const history = useHistory();
+const Signin = ({ history }) => {
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -25,7 +24,7 @@ const Signin = () => {
   const informParent = (response) => {
     authenticate(response, () => {
       isAuth() && isAuth().role === "admin"
-        ? history.pushState("/admin")
+        ? history.push("/admin")
         : history.push("/private");
     });
   };
@@ -35,7 +34,7 @@ const Signin = () => {
     setValues({ ...values, buttonText: "Submitting" });
     axios({
       method: "POST",
-      url: `${process.env.REACT_APP_API}`,
+      url: `${process.env.REACT_APP_API}/signin`,
       data: { email, password },
     })
       .then((response) => {
@@ -63,62 +62,17 @@ const Signin = () => {
       });
   };
 
-  // const signupForm = () => {
-  //   <form action="" className="bg-black">
-  //     <div className="form-group ">
-  //       <label htmlFor="" className="text-muted">
-  //         Name
-  //       </label>
-  //       <input
-  //         type="text"
-  //         className="form-control"
-  //         onChange={handleChange("name")}
-  //         value={name}
-  //       />
-  //     </div>
-
-  //     <div className="form-group">
-  //       <label htmlFor="" className="text-muted">
-  //         Email
-  //       </label>
-  //       <input
-  //         type="email"
-  //         className="form-control"
-  //         onChange={handleChange("email")}
-  //         value={email}
-  //       />
-  //     </div>
-
-  //     <div className="form-group">
-  //       <label htmlFor="" className="text-muted">
-  //         Password
-  //       </label>
-  //       <input
-  //         type="password"
-  //         className="form-control"
-  //         onChange={handleChange("password")}
-  //         value={password}
-  //       />
-  //     </div>
-
-  //     <div>
-  //       <button className="btn btn-primary" onClick={clickSubmit}>
-  //         {buttonText}
-  //       </button>
-  //     </div>
-  //   </form>;
-  // };
   return (
-    <Layout>
-      {/* {JSON.stringify(isAuth())} */}
+    <>
+      <Navbar />
       <div className="col-md-6 offset-md-3">
         <ToastContainer />
-        {/* {JSON.stringify({ email, password })} */}
+
         {isAuth() ? <Redirect to="/" /> : null}
         <h1 className="p-5 text-center">Signin</h1>
         <Google informParent={informParent} />
         <Facebook informParent={informParent} />
-        {/* {signupForm()} */}
+
         <form action="" className="bg-black">
           <div className="form-group">
             <label htmlFor="" className="text-muted">
@@ -158,7 +112,7 @@ const Signin = () => {
           Forgot Password
         </Link>
       </div>
-    </Layout>
+    </>
   );
 };
 export default Signin;

@@ -3,12 +3,12 @@ import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props
 import axios from "axios";
 
 const Facebook = ({ informParent = (f) => f }) => {
-  const responseGoogle = (response) => {
+  const responseFacebook = (response) => {
     console.log(response.tokenId);
     axios({
       method: "POST",
       url: `${process.env.REACT_APP_API}/facebook-login`,
-      data: { userID: reesponse.userID, accessToken: response.accessToken },
+      data: { userID: response.userID, accessToken: response.accessToken },
     })
       .then((response) => {
         console.log("Facebook signin success", response);

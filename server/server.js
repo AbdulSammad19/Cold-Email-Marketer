@@ -19,7 +19,7 @@ mongoose
     console.log("Connection is successfull");
   })
   .catch((err) => {
-    console.log("mongodb connection error");
+    console.log("mongodb connection error", err);
   });
 
 // import routes

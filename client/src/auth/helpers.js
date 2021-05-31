@@ -23,6 +23,7 @@ export const removeCookie = (key) => {
 
 export const getCookie = (key) => {
   if (window !== "undefined") {
+    // console.log(`Get Cookie Method ${cookie.get(key)}`);
     return cookie.get(key);
   }
 };
@@ -54,6 +55,7 @@ export const authenticate = (response, next) => {
 export const isAuth = () => {
   if (window !== "undefined") {
     const cookieChecked = getCookie("token");
+    // console.log(cookieChecked);
     if (cookieChecked) {
       if (localStorage.getItem("user")) {
         return JSON.parse(localStorage.getItem("user"));
